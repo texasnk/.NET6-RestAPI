@@ -26,7 +26,7 @@ namespace ReviewAPI.Controllers
             var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetCategories());
 
 
-            if (!ModelState.IsValid)
+            if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             
