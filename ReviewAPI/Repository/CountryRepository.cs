@@ -8,12 +8,10 @@ namespace ReviewAPI.Repository
     public class CountryRepository : ICountryRepository
     {
         public readonly DataContext _context;
-        public readonly IMapper _mapper;
 
-        public CountryRepository(DataContext context, IMapper mapper)
+        public CountryRepository(DataContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public ICollection<Country> GetCountries()
