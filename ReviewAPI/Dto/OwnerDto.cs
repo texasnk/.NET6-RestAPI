@@ -1,6 +1,6 @@
 ﻿namespace ReviewAPI.Dto
 {
-    internal class OwnerDto
+    public class OwnerDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
