@@ -43,5 +43,11 @@ namespace ReviewAPI.Repository
         {
             return _context.SaveChanges() > 0;
         }
+
+        public bool UpdateReview(Review review)
+        {
+            _context.Reviews.Update(review);
+            return Save();
+        }
     }
 }

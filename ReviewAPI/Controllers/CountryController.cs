@@ -4,6 +4,7 @@ using ReviewAPI.Dto;
 using ReviewAPI.Interface;
 using ReviewAPI.Models;
 using ReviewAPI.Repository;
+using System.Diagnostics.Metrics;
 
 namespace ReviewAPI.Controllers
 {
@@ -96,6 +97,38 @@ namespace ReviewAPI.Controllers
             }
 
             return Ok("Successfully created!");
+        }
+
+        [HttpPut("countryId")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateCountry(int countryId, [FromBody] CountryDto countryUpdate)
+        {
+            if (countryUpdate == null)
+                return BadRequest(ModelState);
+
+            else if (countryId != countryUpdate.Id)
+                return BadRequest(ModelState);
+
+            else if (!_countryRepository.CountryExists(countryId))
+                return NotFound();
+
+            else if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            else
+            {
+                var countryMap = _mapper.Map<Country>(countryUpdate);
+                if (!_countryRepository.UpdateCountry(countryMap))
+                {
+                    ModelState.AddModelError("", "Something went wrong while updating!");
+                    return StatusCode(500, ModelState);
+                }
+
+                return Ok("Successfully updated!");
+            }
+
         }
 
     }

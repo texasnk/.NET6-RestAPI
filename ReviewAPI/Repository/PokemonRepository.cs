@@ -44,7 +44,7 @@ namespace ReviewAPI.Repository
         {
             var pokemonOwnerEntity = _context.Owners.Where(o=>o.Id == ownerId).FirstOrDefault();
             var category = _context.Categories.Where(a=>a.Id== categoryId).FirstOrDefault();
-
+         
             var pokemonOwner = new PokemonOwner()
             {
                 Owner = pokemonOwnerEntity,
@@ -65,5 +65,10 @@ namespace ReviewAPI.Repository
             return _context.SaveChanges() > 0;
         }
 
+        public bool UpdatePokemon(int ownerId, int categoryId, Pokemon pokemon)
+        { 
+            _context.Update(pokemon);
+            return Save();
+        }
     }
 }

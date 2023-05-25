@@ -93,7 +93,7 @@ namespace ReviewAPI.Controllers
                 return BadRequest(ModelState);
 
             var ownerMap = _mapper.Map<Owner>(ownerCreate);
-            ownerMap.Country = _countryRepository.GetCountry(countryId); 
+            ownerMap.Country = _countryRepository.GetCountry(countryId);
 
             if (!_ownerRepository.CreateOwner(ownerMap))
             {
@@ -103,6 +103,36 @@ namespace ReviewAPI.Controllers
 
             return Ok("Successfully created!");
         }
+        [HttpPut("ownerId")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateOwner(int ownerId, [FromBody] OwnerDto ownerUpdate)
+        {
+            if (ownerUpdate == null)
+                return BadRequest(ModelState);
 
+            else if (ownerId != ownerUpdate.Id)
+                return BadRequest(ModelState);
+
+            else if (!_ownerRepository.OwnerExists(ownerId))
+                return NotFound();
+
+            else if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            else
+            {
+                var ownerMap = _mapper.Map<Owner>(ownerUpdate);
+                if (!_ownerRepository.UpdateOwner(ownerMap))
+                {
+                    ModelState.AddModelError("", "Something went wrong while updating!");
+                    return StatusCode(500, ModelState);
+                }
+
+                return Ok("Successfully updated!");
+            }
+
+        }
     }
 }
