@@ -32,5 +32,16 @@ namespace ReviewAPI.Repository
         {
             return _context.Reviews.Any(o=>o.Id== reviewId);
         }
+
+        public bool CreateReview(Review review)
+        {
+            _context.Reviews.Add(review);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            return _context.SaveChanges() > 0;
+        }
     }
 }
