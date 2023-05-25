@@ -70,5 +70,11 @@ namespace ReviewAPI.Repository
             _context.Update(pokemon);
             return Save();
         }
+
+        public bool DeletePokemon(Pokemon pokemon)
+        {
+            _context.Remove(pokemon);
+            return Save();
+        }
     }
 }

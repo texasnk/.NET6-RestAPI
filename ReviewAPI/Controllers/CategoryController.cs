@@ -93,19 +93,14 @@ namespace ReviewAPI.Controllers
             return Ok("Successfully created!");
         }
 
-        [HttpPut("categoryId")]
+        [HttpDelete("categoryId")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateCategory(int categoryId, [FromBody]CategoryDto categoryUpdate)
+        public IActionResult DeleteCategory(int categoryId)
         {
-            if (categoryUpdate == null)
-                return BadRequest(ModelState);
-
-            else if (categoryId != categoryUpdate.Id)
-                return BadRequest(ModelState);
-
-            else if (!_categoryRepository.CategoryExists(categoryId))
+           
+            if (!_categoryRepository.CategoryExists(categoryId))
                 return NotFound();
 
             else if (!ModelState.IsValid)
@@ -113,10 +108,10 @@ namespace ReviewAPI.Controllers
 
             else
             {
-                var categoryMap = _mapper.Map<Category>(categoryUpdate);
-                if (!_categoryRepository.UpdateCategory(categoryMap))
+                var categoryDelete = _categoryRepository.GetCategory(categoryId);
+                if (!_categoryRepository.DeleteCategory(categoryDelete))
                 {
-                    ModelState.AddModelError("", "Something went wrong while updating!");
+                    ModelState.AddModelError("", "Something went wrong while deleting!");
                     return StatusCode(500, ModelState);
                 }
 

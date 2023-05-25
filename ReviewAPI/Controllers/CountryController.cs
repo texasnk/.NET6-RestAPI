@@ -131,5 +131,30 @@ namespace ReviewAPI.Controllers
 
         }
 
+        [HttpDelete("countryId")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteCountry(int countryId)
+        {
+
+            if (!_countryRepository.CountryExists(countryId))
+                return NotFound();
+
+            else if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            else
+            {
+                var countryDelete = _countryRepository.GetCountry(countryId);
+                if (!_countryRepository.DeleteCountry(countryDelete))
+                {
+                    ModelState.AddModelError("", "Something went wrong while deleting!");
+                    return StatusCode(500, ModelState);
+                }
+
+                return Ok("Successfully updated!");
+            }
+        }
     }
 }

@@ -50,5 +50,11 @@ namespace ReviewAPI.Repository
             _context.Reviewers.Update(reviewer);
             return Save();
         }
+
+        public bool DeleteReviewer(Reviewer reviewer)
+        {
+            _context.Reviewers.Remove(reviewer);
+            return Save();
+        }
     }
 }

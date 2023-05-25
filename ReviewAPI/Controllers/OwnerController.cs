@@ -132,7 +132,33 @@ namespace ReviewAPI.Controllers
 
                 return Ok("Successfully updated!");
             }
-
         }
+
+        [HttpDelete("ownerId")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteOwner(int ownerId)
+        {
+
+            if (!_ownerRepository.OwnerExists(ownerId))
+                return NotFound();
+
+            else if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            else
+            {
+                var ownerDelete = _ownerRepository.GetOwner(ownerId);
+                if (!_ownerRepository.DeleteOwner(ownerDelete))
+                {
+                    ModelState.AddModelError("", "Something went wrong while deleting!");
+                    return StatusCode(500, ModelState);
+                }
+
+                return Ok("Successfully updated!");
+            }
+        }
+        
     }
 }
